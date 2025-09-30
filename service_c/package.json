@@ -5,15 +5,18 @@
   "type": "module",
   "main": "stats.js",
   "scripts": {
-    "start": "node stats.js",
-    "dev": "nodemon stats.js"
+    "build": "tsc",
+    "start": "node dist/src/server.js",
+    "dev": "nodemon --exec ts-node server.ts"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "redis": "^4.6.8",
-    "prom-client": "^15.0.0",
     "cors": "^2.8.5",
-    "helmet": "^7.0.0"
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.1.0",
+    "helmet": "^7.0.0",
+    "ioredis": "^5.8.0",
+    "prom-client": "^15.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.3",
@@ -30,8 +33,11 @@
     "@types/supertest": "^6.0.3",
     "@types/uuid": "^10.0.0",
     "babel-jest": "^30.1.2",
+    "eslint": "^9.36.0",
+    "husky": "^9.1.7",
     "jest": "^30.1.2",
     "nodemon": "^3.1.10",
+    "prettier": "^3.6.2",
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",

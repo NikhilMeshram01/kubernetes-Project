@@ -11,7 +11,7 @@ export async function updateMetrics() {
   try {
     // Get current stats
     const stats = await getJobStats();
-    const queueLengthValue = await redis.lLen("job-queue");
+    const queueLengthValue = await redis.llen("job-queue");
 
     // Update queue length
     queueLength.set(queueLengthValue);

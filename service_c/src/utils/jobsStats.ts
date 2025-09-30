@@ -3,22 +3,32 @@ import redis from "../configs/redis.js";
 // Define the shape of a job object from Redis
 interface Job {
   status: "queued" | "processing" | "completed" | "failed";
-  type?: string;
-  processingTime?: string;
+  type?: string | undefined;
+  processingTime?: string | undefined;
 }
 
 // Define the shape of the stats object
 interface JobStats {
   total: number;
-  queued: number;
-  processing: number;
-  completed: number;
-  failed: number;
+  queued: 0;
+  processing: 0;
+  completed: 0;
+  failed: 0;
   byType: Record<string, number>;
   processingTimes: Record<
     string,
     { average: number; count: number; min: number; max: number }
   >;
+}
+
+// Helper function to validate and convert Redis data to Job
+function isValidJob(data: unknown): data is Job {
+  if (typeof data !== "object" || data === null) {
+    return false;
+  }
+  const job = data as Record<string, string>;
+  const validStatuses = ["queued", "processing", "completed", "failed"];
+  return "status" in job && validStatuses.includes(job.status);
 }
 
 // Get all job keys
@@ -44,8 +54,13 @@ async function getJobStats(): Promise<JobStats> {
     const tempProcessingTimes: Record<string, number[]> = {};
 
     for (const key of jobKeys) {
-      const job = (await redis.hGetAll(key)) as Job;
-      if (job && Object.keys(job).length > 0) {
+      const rawJob = await redis.hgetall(key);
+      if (isValidJob(rawJob)) {
+        const job: Job = {
+          status: rawJob.status,
+          type: rawJob.type,
+          processingTime: rawJob.processingTime,
+        };
         stats.total++;
         stats[job.status] ??= 0;
         stats[job.status]++;

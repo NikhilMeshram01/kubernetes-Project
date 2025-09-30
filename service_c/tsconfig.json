@@ -30,8 +30,6 @@
     "types",
     "src",
     "tests",
-    "src/server.ts",
-    "src/app.ts"
   ],
   "exclude": [
     "node_modules",
