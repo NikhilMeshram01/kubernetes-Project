@@ -1,4 +1,4 @@
-import express, { type Request, type Response } from "express";
+import { type Request, type Response } from "express";
 import redis from "../configs/redis.js";
 import { getAllJobKeys, getJobStats } from "../utils/jobsStats.js";
 import { updateMetrics } from "../utils/updateMetrics.js";
@@ -7,7 +7,7 @@ import { register } from "../utils/promClient.js";
 const statsController = async (req: Request, res: Response) => {
   try {
     const stats = await getJobStats();
-    const queueLengthValue = await redis.lLen("job-queue");
+    const queueLengthValue = await redis.llen("job-queue");
 
     res.json({
       timestamp: new Date().toISOString(),
@@ -30,19 +30,21 @@ const statsController = async (req: Request, res: Response) => {
 const statsDetailed = async (req: Request, res: Response) => {
   try {
     const stats = await getJobStats();
-    const queueLengthValue = await redis.lLen("job-queue");
+    const queueLengthValue = await redis.llen("job-queue");
     const jobKeys = (await getAllJobKeys()) ?? [];
 
     // Get recent jobs
     const recentJobs = [];
     for (let i = 0; i < Math.min(10, jobKeys.length); i++) {
       const key = jobKeys[i];
-      const job = await redis.hGetAll(key);
-      if (job && Object.keys(job).length > 0) {
-        recentJobs.push({
-          id: key.replace("job:", ""),
-          ...job,
-        });
+      if (key) {
+        const job = await redis.hgetall(key);
+        if (job && Object.keys(job).length > 0) {
+          recentJobs.push({
+            id: key.replace("job:", ""),
+            ...job,
+          });
+        }
       }
     }
 
