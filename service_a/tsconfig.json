@@ -1,56 +1,42 @@
 {
-  // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    // File Layout
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "rootDir": "./src",
     "outDir": "./dist",
-    // Environment Settings
-    // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
-    "target": "esnext",
     "types": [
-      "jest",
-      "node",
-      // "./types/jest" // Add this line
+      "node"
     ],
-    // For nodejs:
-    // "lib": ["esnext"],
-    // "types": ["node"],
-    // and npm install -D @types/node
-    // Other Outputs
     "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-    // Stricter Typechecking Options
+    "declaration": false,
+    "declarationMap": false,
+    // Strict type-checking
+    "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-    // Style Options
-    // "noImplicitReturns": true,
-    // "noImplicitOverride": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "noFallthroughCasesInSwitch": true,
-    // "noPropertyAccessFromIndexSignature": true,
-    // Recommended Options
-    "strict": true,
-    "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
-    "skipLibCheck": true,
-    // added
+    // Module handling
     "esModuleInterop": true,
-    "moduleResolution": "nodenext",
-    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "verbatimModuleSyntax": false, // Set to false for better compatibility
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    // Additional checks
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    // Output control
+    "removeComments": true,
+    "noEmitOnError": true
   },
   "include": [
-    "types",
-    "src",
-    "tests"
+    "src/**/*",
+    "tests/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist",
+    "**/*.test.ts",
+    "**/*.spec.ts"
   ]
 }
