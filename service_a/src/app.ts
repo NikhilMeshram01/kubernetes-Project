@@ -1,13 +1,13 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
 
-import express, { type Request, type Response } from "express";
-import cors from "cors";
-import helmet from "helmet";
-import { globalErrorHandler } from "./utils/errorHandler.js";
-import redis from "./configs/redis.js";
-import serviceARoutes from "./routes/index.js";
-import { apiLimiter } from "./utils/rateLimiter.js";
+import express, { type Request, type Response } from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import { globalErrorHandler } from './utils/errorHandler.js';
+import redis from './configs/redis.js';
+import serviceARoutes from './routes/jobRoutes.js';
+import { apiLimiter } from './utils/rateLimiter.js';
 
 const app = express();
 
@@ -17,33 +17,30 @@ app.use(cors());
 app.use(express.json());
 app.use(apiLimiter);
 
-// Connect to Redis
-// redis.connect().catch(console.error);
-
 // Health check endpoint
-app.get("/health", (req: Request, res: Response) => {
+app.get('/health', (req: Request, res: Response) => {
   res.json({
-    status: "healthy",
+    status: 'healthy',
     timestamp: new Date().toISOString(),
-    service: "job-submitter",
+    service: 'Service_A : job-submitter',
   });
 });
 
 // routes
-app.use("/api/v1/job", serviceARoutes);
+app.use('/api/v1/job', serviceARoutes);
 
 // Error handling middleware
 app.use(globalErrorHandler);
 
 // Graceful shutdown
-process.on("SIGTERM", async () => {
-  console.log("SIGTERM received, shutting down gracefully");
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM received, shutting down gracefully');
   await redis.quit();
   process.exit(0);
 });
 
-process.on("SIGINT", async () => {
-  console.log("SIGINT received, shutting down gracefully");
+process.on('SIGINT', async () => {
+  console.log('SIGINT received, shutting down gracefully');
   await redis.quit();
   process.exit(0);
 });

@@ -1,12 +1,12 @@
-import express, { type Request, type Response } from "express";
-import cors from "cors";
-import helmet from "helmet";
+import express, { type Request, type Response } from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
 
-import { globalErrorHandler } from "./utils/errorHandler.js";
-import redis from "./configs/redis.js";
-import { apiLimiter } from "./utils/rateLimiter.js";
-import workerRoutes from "./routes/workerRoutes.js";
-import { shutdownWorker } from "./utils/worker.js";
+import { globalErrorHandler } from './utils/errorHandler.js';
+import redis from './configs/redis.js';
+import { apiLimiter } from './utils/rateLimiter.js';
+import workerRoutes from './routes/workerRoutes.js';
+import { shutdownWorker } from './utils/worker.js';
 
 const app = express();
 
@@ -17,30 +17,30 @@ app.use(express.json());
 app.use(apiLimiter);
 
 // Health check endpoint
-app.get("/health", (req: Request, res: Response) => {
+app.get('/health', (req: Request, res: Response) => {
   res.json({
-    status: "healthy",
+    status: 'healthy',
     timestamp: new Date().toISOString(),
-    service: "worker",
+    service: 'Service_B : Worker',
     uptime: process.uptime(),
   });
 });
 
-app.use("api/v1/worker", workerRoutes);
+app.use('api/v1/worker', workerRoutes);
 
 // Error handling middleware
 app.use(globalErrorHandler);
 
 // Graceful shutdown
-process.on("SIGTERM", async () => {
-  console.log("SIGTERM received, shutting down gracefully");
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM received, shutting down gracefully');
   shutdownWorker();
   await redis.quit();
   process.exit(0);
 });
 
-process.on("SIGINT", async () => {
-  console.log("SIGINT received, shutting down gracefully");
+process.on('SIGINT', async () => {
+  console.log('SIGINT received, shutting down gracefully');
   shutdownWorker();
   await redis.quit();
   process.exit(0);

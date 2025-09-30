@@ -6,7 +6,7 @@
   "main": "stats.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/src/server.js",
+    "start": "node dist/server.js",
     "dev": "nodemon --exec ts-node server.ts"
   },
   "dependencies": {
