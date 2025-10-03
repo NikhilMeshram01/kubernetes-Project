@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: service-b-monitor
+  namespace: job-system
+spec:
+  selector:
+    matchLabels:
+      app: service-b
+  endpoints:
+    - port: http
+      path: /api/v1/worker/metrics
+      interval: 15s
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: service-c-monitor
+  namespace: job-system
+spec:
+  selector:
+    matchLabels:
+      app: service-c
+  endpoints:
+    - port: http
+      path: /api/v1/stats/metrics
+      interval: 15s

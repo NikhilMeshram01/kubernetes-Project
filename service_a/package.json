@@ -6,11 +6,10 @@
   "main": "server.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/src/server.js",
     "dev": "nodemon --exec ts-node server.ts",
     "test": "jest --runInBand",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage"
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",

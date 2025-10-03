@@ -23,35 +23,41 @@ jest.mock('ioredis', () => {
       this.hashes = new Map();
       setImmediate(() => this.emit('connect'));
     }
-    ping() {
+    ping(): Promise<string> {
       return Promise.resolve('PONG');
     }
-    quit() {
+
+    quit(): Promise<void> {
       return Promise.resolve();
     }
-    lpush(key, value) {
-      const arr = this.storage.get(key) || [];
+
+    lpush(key: string, value: string): Promise<number> {
+      const arr = (this.storage.get(key) as string[]) || [];
       arr.unshift(value);
       this.storage.set(key, arr);
       return Promise.resolve(arr.length);
     }
-    llen(key) {
-      const arr = this.storage.get(key) || [];
+
+    llen(key: string): Promise<number> {
+      const arr = (this.storage.get(key) as string[]) || [];
       return Promise.resolve(arr.length);
     }
-    hset(key, obj) {
-      const map = this.hashes.get(key) || {};
+    hset(key: string, obj: Record<string, string>): Promise<number> {
+      const map = (this.hashes.get(key) as Record<string, string>) || {};
       Object.assign(map, obj);
       this.hashes.set(key, map);
       return Promise.resolve(1);
     }
-    hgetall(key) {
+
+    hgetall(key: string): Promise<Record<string, string>> {
       return Promise.resolve(this.hashes.get(key) || {});
     }
-    get(key) {
-      return Promise.resolve(this.storage.get(key) || null);
+
+    get(key: string): Promise<string | null> {
+      return Promise.resolve(this.storage.get(key) as string | null);
     }
-    set(key, value) {
+
+    set(key: string, value: string): Promise<string> {
       this.storage.set(key, value);
       return Promise.resolve('OK');
     }
