@@ -26,7 +26,7 @@ app.get('/health', (req: Request, res: Response) => {
   });
 });
 
-app.use('api/v1/worker', workerRoutes);
+app.use('/api/v1/worker', workerRoutes);
 
 // Error handling middleware
 app.use(globalErrorHandler);

@@ -3,10 +3,11 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "node",
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./dist",
     "types": [
-      "node"
+      "node",
+      "jest"
     ],
     "sourceMap": true,
     "declaration": false,
@@ -18,7 +19,7 @@
     // Module handling
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "verbatimModuleSyntax": false, // Set to false for better compatibility
+    "verbatimModuleSyntax": false,
     "isolatedModules": true,
     "moduleDetection": "force",
     // Additional checks

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-b
+  namespace: job-system
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: service-b
+  template:
+    metadata:
+      labels:
+        app: service-b
+    spec:
+      containers:
+        - name: service-b
+          image: nikhilmindfire/service_b:latest
+          ports:
+            - containerPort: 5002
+          env:
+            - name: REDIS_HOST
+              value: "redis"
+            - name: REDIS_PORT
+              value: "6379"
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-b
+  namespace: job-system
+spec:
+  selector:
+    app: service-b
+  ports:
+    - port: 5002
+      targetPort: 5002
