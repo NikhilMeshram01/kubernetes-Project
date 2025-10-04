@@ -14,8 +14,6 @@ app.use(cors());
 app.use(express.json());
 app.use(apiLimiter);
 
-app.use('/api/v1/stats', statRoutes);
-
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({
@@ -24,6 +22,8 @@ app.get('/health', (req, res) => {
     service: 'Service_C : Stats-Aggregator',
   });
 });
+
+app.use('/api/v1/stats', statRoutes);
 
 // Error handling middleware
 app.use(globalErrorHandler);

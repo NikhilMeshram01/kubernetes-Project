@@ -129,9 +129,11 @@ spec:
             - --cert-dir=/tmp
             - --secure-port=4443
             - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
-            - --kubelet-use-node-status-port
             - --kubelet-insecure-tls
-          image: registry.k8s.io/metrics-server/metrics-server:v0.7.1
+            - --v=4
+            - --metric-resolution=15s
+            - --kubelet-port=10250
+          image: registry.k8s.io/metrics-server/metrics-server:v0.7.2
           name: metrics-server
           ports:
             - containerPort: 4443
@@ -141,16 +143,35 @@ spec:
               path: /readyz
               port: https
               scheme: HTTPS
-            initialDelaySeconds: 20
+            initialDelaySeconds: 30
             periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
           livenessProbe:
             httpGet:
               path: /livez
               port: https
               scheme: HTTPS
-            initialDelaySeconds: 20
+            initialDelaySeconds: 30
             periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+          volumeMounts:
+            - name: tmp-dir
+              mountPath: /tmp
       serviceAccountName: metrics-server
+      volumes:
+        - name: tmp-dir
+          emptyDir: {}
+      nodeSelector:
+        kubernetes.io/os: linux
 ---
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
