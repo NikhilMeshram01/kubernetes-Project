@@ -15,9 +15,10 @@ spec:
     spec:
       containers:
         - name: service-b
-          image: nikhilmindfire/service_b:latest
+          image: nikhilmindfire/service-b:latest
           ports:
-            - containerPort: 5002
+            - name: http
+              containerPort: 5002
           env:
             - name: REDIS_HOST
               value: "redis"
@@ -40,5 +41,6 @@ spec:
   selector:
     app: service-b
   ports:
-    - port: 5002
+    - name: http
+      port: 5002
       targetPort: 5002

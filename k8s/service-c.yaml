@@ -15,14 +15,22 @@ spec:
     spec:
       containers:
         - name: service-c
-          image: nikhilmindfire/service_c:latest
+          image: nikhilmindfire/service-c:latest
           ports:
-            - containerPort: 5003
+            - name: http
+              containerPort: 5003
           env:
             - name: REDIS_HOST
               value: "redis"
             - name: REDIS_PORT
               value: "6379"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
 ---
 apiVersion: v1
 kind: Service
@@ -33,5 +41,6 @@ spec:
   selector:
     app: service-c
   ports:
-    - port: 5003
+    - name: http
+      port: 5003
       targetPort: 5003

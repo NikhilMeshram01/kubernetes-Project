@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: service-a
-          image: nikhilmindfire/service_a:latest
+          image: nikhilmindfire/service-a:latest
           ports:
             - containerPort: 5001
           env:
@@ -23,6 +23,13 @@ spec:
               value: "redis"
             - name: REDIS_PORT
               value: "6379"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
 ---
 apiVersion: v1
 kind: Service
