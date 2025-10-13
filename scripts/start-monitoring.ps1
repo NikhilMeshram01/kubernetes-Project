@@ -1,4 +1,4 @@
-Write-Host "📊 STARTING MONITORING" -ForegroundColor Green
+Write-Host " STARTING MONITORING" -ForegroundColor Green
 Write-Host "=====================" -ForegroundColor Cyan
 
 # Start Grafana port forwarding
@@ -12,7 +12,7 @@ Start-Job -ScriptBlock {
     kubectl port-forward -n monitoring svc/prometheus-operated 9090:9090
 } | Out-Null
 
-Write-Host "✅ Monitoring dashboards started:" -ForegroundColor Green
+Write-Host " Monitoring dashboards started:" -ForegroundColor Green
 Write-Host "   Grafana:    http://localhost:3000" -ForegroundColor White
 Write-Host "   Username:   admin" -ForegroundColor White  
 Write-Host "   Password:   admin" -ForegroundColor White

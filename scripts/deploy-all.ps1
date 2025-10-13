@@ -15,7 +15,8 @@ function Invoke-CommandWithStatus {
         Invoke-Expression $Command *>&1 | Out-Null
         Write-Host " ✅" -ForegroundColor Green
         return $true
-    } catch {
+    }
+    catch {
         Write-Host " ❌ Error: $($_.Exception.Message)" -ForegroundColor Red
         return $false
     }
@@ -40,13 +41,16 @@ if (-not $SkipImageBuild) {
                 docker push $imageName 2>&1 | Out-Null
                 if ($LASTEXITCODE -eq 0) {
                     Write-Host " ✅" -ForegroundColor Green
-                } else {
+                }
+                else {
                     Write-Host " ⚠️ (Push failed, using local image)" -ForegroundColor Yellow
                 }
-            } else {
+            }
+            else {
                 Write-Host " ❌" -ForegroundColor Red
             }
-        } else {
+        }
+        else {
             Write-Host "  ❌ Dockerfile not found for $service" -ForegroundColor Red
         }
     }
@@ -74,7 +78,8 @@ foreach ($manifest in $manifests) {
     if (Test-Path $manifest) {
         $manifestName = Split-Path $manifest -Leaf
         Invoke-CommandWithStatus -Command "kubectl apply -f $manifest" -Description "Deploying $manifestName"
-    } else {
+    }
+    else {
         Write-Host "  ❌ Manifest not found: $manifest" -ForegroundColor Red
     }
 }

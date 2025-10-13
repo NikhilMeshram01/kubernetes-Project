@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import { apiLimiter } from './utils/rateLimiter.js';
+// import { apiLimiter } from './utils/rateLimiter.js';
 import { globalErrorHandler } from './utils/errorHandler.js';
 import redis from './configs/redis.js';
 import statRoutes from './routes/statRoutes.js';
@@ -12,7 +12,7 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use(apiLimiter);
+// app.use(apiLimiter);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -23,7 +23,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-app.use('/api/v1/stats', statRoutes);
+app.use('/stats', statRoutes);
 
 // Error handling middleware
 app.use(globalErrorHandler);

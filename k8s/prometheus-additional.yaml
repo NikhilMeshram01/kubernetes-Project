@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-additional-config
+  namespace: monitoring
+data:
+  prometheus-additional.yaml: |
+    - job_name: 'service-b-worker'
+      kubernetes_sd_configs:
+        - role: endpoints
+          namespaces:
+            names:
+              - job-system
+      relabel_configs:
+        - source_labels: [__meta_kubernetes_service_name]
+          action: keep
+          regex: service-b
+        - source_labels: [__meta_kubernetes_endpoint_port_name]
+          action: keep
+          regex: http
+      metrics_path: /worker/metrics
+      scrape_interval: 15s
+      
+    - job_name: 'service-c-stats'
+      kubernetes_sd_configs:
+        - role: endpoints
+          namespaces:
+            names:
+              - job-system
+      relabel_configs:
+        - source_labels: [__meta_kubernetes_service_name]
+          action: keep
+          regex: service-c
+        - source_labels: [__meta_kubernetes_endpoint_port_name]
+          action: keep
+          regex: http
+      metrics_path: /stats/metrics
+      scrape_interval: 15s

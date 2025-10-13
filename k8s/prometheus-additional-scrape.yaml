@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: prometheus-additional-scrape-configs
+  namespace: monitoring
+stringData:
+  additional-scrape-configs.yaml: |
+    - job_name: 'service-b-metrics'
+      static_configs:
+        - targets: ['service-b.job-system:5002']
+      metrics_path: /worker/metrics
+      scrape_interval: 15s
+      
+    - job_name: 'service-c-metrics'
+      static_configs:
+        - targets: ['service-c.job-system:5003']
+      metrics_path: /stats/metrics
+      scrape_interval: 15s

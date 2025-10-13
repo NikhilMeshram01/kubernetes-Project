@@ -7,7 +7,7 @@ import helmet from 'helmet';
 import { globalErrorHandler } from './utils/errorHandler.js';
 import redis from './configs/redis.js';
 import serviceARoutes from './routes/jobRoutes.js';
-import { apiLimiter } from './utils/rateLimiter.js';
+// import { apiLimiter } from './utils/rateLimiter.js';
 
 const app = express();
 
@@ -15,7 +15,8 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use(apiLimiter);
+
+// app.use(apiLimiter);
 
 // Health check endpoint
 app.get('/health', (req: Request, res: Response) => {
@@ -27,7 +28,7 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 // routes
-app.use('/api/v1/job', serviceARoutes);
+app.use('/job', serviceARoutes);
 
 // Error handling middleware
 app.use(globalErrorHandler);

@@ -9,7 +9,7 @@ spec:
       app: service-b
   endpoints:
     - port: http
-      path: /api/v1/worker/metrics
+      path: /worker/metrics
       interval: 15s
 
 ---
@@ -24,5 +24,5 @@ spec:
       app: service-c
   endpoints:
     - port: http
-      path: /api/v1/stats/metrics
+      path: /stats/metrics
       interval: 15s
